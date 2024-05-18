@@ -15,6 +15,15 @@ import org.springframework.http.HttpStatus;
 import com.restauranteMexicano.App.JavaMappers.ClienteMapper;
 import com.restauranteMexicano.App.model.Cliente;
 
+/**
+    Diseño y arquitectura de software
+    @author
+        Santiago Sánchez Cárdenas - 0000271976
+        Sergio Gabriel Nieto Meneses - 0000246107
+        Mauricio Andres Valderrama Acosta - 0000251802
+
+ */
+
 @RestController
 @RequestMapping("/Cliente")
 public class ClienteController {
@@ -39,9 +48,15 @@ public class ClienteController {
 
     
     @GetMapping("/ConsultarCliente/{id}")
-    public List<Cliente> ConsultarCliente(@PathVariable("id") Integer id){
+    public Cliente ConsultarCliente(@PathVariable("id") Integer id){
         return clienteMapper.ConsultarCliente(id);
     }
+
+    @GetMapping("/ConsultarLicencia/{licencia}")
+    public Boolean ConsultarLicencia(@PathVariable("Licencia") String Licencia){
+        return clienteMapper.ConsultarLicencia(Licencia);
+    }
+    
 
     @DeleteMapping("/EliminarCliente/{id}")
     public ResponseEntity<String> EliminarCliente(@PathVariable("id") Integer id){
@@ -49,5 +64,6 @@ public class ClienteController {
         return ResponseEntity.ok("Cliente eliminado correctamente");
     }
     
+
 
 }

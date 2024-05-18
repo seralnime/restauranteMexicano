@@ -1,7 +1,6 @@
 package com.restauranteMexicano.App.JavaMappers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -27,13 +26,16 @@ public interface ClienteMapper {
     List<Cliente> ConsultarClientes();
 
     @Select("select * from T_CLIENTES where ID =#{id}")
-    List<Cliente> ConsultarCliente(@PathVariable("id") Integer id);
+    Cliente ConsultarCliente(@PathVariable("id") Integer id);
 
     @Insert("insert into T_CLIENTES(ID, nombre, Licencia, Direccion) VALUES (#{ID}, #{nombre}, #{Licencia}, #{Direccion})")
     void CrearCliente(Cliente cliente);
 
     @Delete("delete from T_CLIENTES where ID = #{id}")
     void EliminarCliente(@PathVariable("id") Integer id);
+
+    @Select("SELECT estadoPremium FROM T_LICENCIA WHERE licencia = #{licencia}")
+    Boolean ConsultarLicencia(String licencia);
 
 }
 
