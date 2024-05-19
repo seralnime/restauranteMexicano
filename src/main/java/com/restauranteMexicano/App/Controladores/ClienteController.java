@@ -10,18 +10,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.restauranteMexicano.App.JavaMappers.ClienteMapper;
+import com.restauranteMexicano.App.Servicios.ServicioClienteImpl;
 import com.restauranteMexicano.App.model.Cliente;
+
+/**
+    Diseño y arquitectura de software
+    @author
+        Santiago Sánchez Cárdenas - 0000271976
+        Sergio Gabriel Nieto Meneses - 0000246107
+        Mauricio Andres Valderrama Acosta - 0000251802
+
+ */
 
 @RestController
 @RequestMapping("/Cliente")
 public class ClienteController {
  
     private ClienteMapper clienteMapper;
-
+    @Autowired
+    private ServicioClienteImpl servicioClienteImpl;
     
+
     public ClienteController(ClienteMapper clienteMapper) {
         this.clienteMapper = clienteMapper;
     }
@@ -39,9 +52,15 @@ public class ClienteController {
 
     
     @GetMapping("/ConsultarCliente/{id}")
-    public List<Cliente> ConsultarCliente(@PathVariable("id") Integer id){
-        return clienteMapper.ConsultarCliente(id);
+    public Cliente ConsultarCliente(@PathVariable("id") Integer id){
+        return servicioClienteImpl.consultarCliente(id);
     }
+
+    @GetMapping("/ConsultarLicencia/{Licencia}")
+    public Boolean ConsultarLicencia(@PathVariable("Licencia") String Licencia){
+        return servicioClienteImpl.LicenciaValida(Licencia);
+    }
+    
 
     @DeleteMapping("/EliminarCliente/{id}")
     public ResponseEntity<String> EliminarCliente(@PathVariable("id") Integer id){
@@ -49,5 +68,6 @@ public class ClienteController {
         return ResponseEntity.ok("Cliente eliminado correctamente");
     }
     
+
 
 }
