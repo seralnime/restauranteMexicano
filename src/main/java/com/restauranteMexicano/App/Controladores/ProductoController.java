@@ -69,7 +69,7 @@ public class ProductoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(producto);
     }
     
-    @GetMapping("/ConsultarProductoPorPedido")
+    @GetMapping("/ConsultarProductoPorPedido/{ID}")
     public List<Producto> ConsultarProductoPorPedido(@PathVariable("ID") Integer ID){
         return productoMapper.ConsultarProductoPorPedido(ID);
     }

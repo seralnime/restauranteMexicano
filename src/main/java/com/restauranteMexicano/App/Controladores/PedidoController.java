@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import com.restauranteMexicano.App.DTO.PedidoDTO;
 import com.restauranteMexicano.App.Servicios.ServicioPedidoImpl;
 import com.restauranteMexicano.App.model.Pedido;
 
@@ -40,9 +39,9 @@ public class PedidoController {
     }
 
     @PostMapping("/CrearPedido")
-    public ResponseEntity<PedidoDTO> CrearPedido(@RequestBody PedidoDTO pedidoDTO){
-        servicioPedidoImpl.CrearPedido(pedidoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
+    public ResponseEntity<Pedido> CrearPedido(@RequestBody Pedido pedido){
+        servicioPedidoImpl.CrearPedido(pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
 
     
@@ -50,12 +49,5 @@ public class PedidoController {
     public Pedido ConsultarPedido(@PathVariable("id") Integer id){
         return servicioPedidoImpl.ConsultarPedido(id);
     }
-
-    @DeleteMapping("/EliminarPedido/{id}")
-    public ResponseEntity<String> EliminarPedido(@PathVariable("id") Integer id){
-        servicioPedidoImpl.EliminarPedido(id);
-        return ResponseEntity.ok("Pedido eliminado correctamente");
-    }
-    
 
 }
