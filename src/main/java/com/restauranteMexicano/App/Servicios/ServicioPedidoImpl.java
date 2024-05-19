@@ -48,17 +48,33 @@ public class ServicioPedidoImpl implements ServicioPedido{
     }
 
     @Override
-    public void CrearPedido(Pedido pedido) {
-        pedidoMapper.CrearPedido(pedido);
+    public void CrearPedido(PedidoDTO pedidoDTO) {
+        pedidoMapper.CrearPedido(pedidoDTO);
+    }
+
+    @Override
+    public void EliminarPedido(Integer id){
+        pedidoMapper.EliminarPedido(id);
     }
 
     public Pedido cambiaPedidoDTO(PedidoDTO pedidoDTO){
         Cliente cliente = clienteMapper.ConsultarCliente(pedidoDTO.getClienteID());
         List<Producto> productos = productoMapper.ConsultarProductoPorPedido(pedidoDTO.getID());
-        Pedido pedido = new Pedido(pedidoDTO.getID(), cliente, productos, servicioClienteImpl.LicenciaValida(cliente.getLicencia()));
+        Boolean esPremium = servicioClienteImpl.LicenciaValida(cliente.getLicencia());
+        Float totalP = 0f;
+        if(!esPremium){
+            totalP += 3500;
+        }
+        for (Producto producto : productos) {
+            totalP += producto.getPrecio() * producto.getCantidad();
+        }
+        Pedido pedido = new Pedido(cliente, productos, totalP);
+        pedido.setID(pedidoDTO.getID());
         pedido.setCliente(cliente);
         pedido.setProductos(productos);
+        
         return pedido;
     }
+
 }
 

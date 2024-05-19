@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
-import com.restauranteMexicano.App.JavaMappers.PedidoMapper;
+import com.restauranteMexicano.App.DTO.PedidoDTO;
 import com.restauranteMexicano.App.Servicios.ServicioPedidoImpl;
 import com.restauranteMexicano.App.model.Pedido;
 
@@ -30,15 +30,9 @@ import com.restauranteMexicano.App.model.Pedido;
 @RequestMapping("/Pedido")
 public class PedidoController {
  
-    @Autowired
-    private PedidoMapper pedidoMapper;
 
     @Autowired
     private ServicioPedidoImpl servicioPedidoImpl;
-
-    public PedidoController(PedidoMapper pedidoMapper) {
-        this.pedidoMapper = pedidoMapper;
-    }
 
     @GetMapping("/ConsultarPedidos")
     public List<Pedido> ConsultarPedidos(){
@@ -46,9 +40,9 @@ public class PedidoController {
     }
 
     @PostMapping("/CrearPedido")
-    public ResponseEntity<Pedido> CrearPedido(@RequestBody Pedido pedido){
-        pedidoMapper.CrearPedido(pedido);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+    public ResponseEntity<PedidoDTO> CrearPedido(@RequestBody PedidoDTO pedidoDTO){
+        servicioPedidoImpl.CrearPedido(pedidoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoDTO);
     }
 
     
@@ -59,7 +53,7 @@ public class PedidoController {
 
     @DeleteMapping("/EliminarPedido/{id}")
     public ResponseEntity<String> EliminarPedido(@PathVariable("id") Integer id){
-        pedidoMapper.EliminarPedido(id);
+        servicioPedidoImpl.EliminarPedido(id);
         return ResponseEntity.ok("Pedido eliminado correctamente");
     }
     

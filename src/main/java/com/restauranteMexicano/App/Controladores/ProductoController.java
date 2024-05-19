@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.restauranteMexicano.App.JavaMappers.ProductoMapper;
+import com.restauranteMexicano.App.Servicios.ServicioProxyImpl;
 import com.restauranteMexicano.App.model.Producto;
 
 /**
@@ -29,16 +31,18 @@ import com.restauranteMexicano.App.model.Producto;
 @RequestMapping("/Producto")
 public class ProductoController {
  
+    @Autowired
     private ProductoMapper productoMapper;
-
+    @Autowired
+    private ServicioProxyImpl servicioProxyImpl;
 
     public ProductoController(ProductoMapper productoMapper) {
         this.productoMapper = productoMapper;
     }
 
-    @GetMapping("/ConsultarProductos")
-    public List<Producto> ConsultarProductos(){
-        return productoMapper.ConsultarProductos();
+    @GetMapping("/ConsultarProductos/{clienteID}")
+    public List<Producto> ConsultarProductos(@PathVariable("clienteID") Integer clienteID){
+        return servicioProxyImpl.ConsultarProductos(clienteID);
     }
 
     @PostMapping("/CrearProducto")
@@ -48,9 +52,9 @@ public class ProductoController {
     }
 
     
-    @GetMapping("/ConsultarProducto/{id}")
-    public Producto ConsultarProducto(@PathVariable("id") Integer id){
-        return productoMapper.ConsultarProducto(id);
+    @GetMapping("/ConsultarProducto/{id}/{clienteID}")
+    public Producto ConsultarProducto(@PathVariable("id") Integer id, @PathVariable("clienteID") Integer clienteID){
+        return servicioProxyImpl.ConsultarProducto(id, clienteID);
     }
 
     @DeleteMapping("/EliminarProducto/{id}")
@@ -61,7 +65,7 @@ public class ProductoController {
 
     @PutMapping("/ActualizarProducto")
     public ResponseEntity<Producto> ActualizarProducto(@RequestBody Producto producto){
-        productoMapper.ActualizarProducto(producto);
+        servicioProxyImpl.ActualizarProducto(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(producto);
     }
     

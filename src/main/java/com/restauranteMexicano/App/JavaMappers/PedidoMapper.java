@@ -30,10 +30,10 @@ public interface PedidoMapper {
     @Select("select * from T_PEDIDOS where ID =#{id}")
     PedidoDTO ConsultarPedido(@PathVariable("id") Integer id);
 
-    @Insert("INSERT INTO T_PEDIDOS (ClienteID, total, PagoHecho, tarifaDomicilio) VALUES (#{ID}, #{total}, #{PagoHecho}, #{tarfiaDomicilio})")
+    @Insert("INSERT INTO T_PEDIDOS (ClienteID, total, tarifaDomicilio) VALUES (#{ClienteID}, #{total}, #{tarfiaDomicilio})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "ID",
             before = false, resultType = Integer.class)
-    void CrearPedido(Pedido pedido);
+    void CrearPedido(PedidoDTO pedidoDTO);
 
     @Delete("delete from T_PEDIDOS where ID = #{id}")
     void EliminarPedido(@PathVariable("id") Integer id);
